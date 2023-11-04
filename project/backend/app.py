@@ -2,14 +2,18 @@ from flask import Flask, jsonify, request
 from data import parse_csv
 from chat import get_response
 import datetime
+from flask import Flask, render_template
 
 app = Flask(__name__)
+
+@app.route('/', methods=['GET'])
+def hello_world():
+    return render_template('index.html')
 
 @app.route('/get/<query>/<value>', methods=['GET'])
 def hello(query, value):
     result = parse_csv('emissions.csv', {query: value})
     return jsonify(result), 200
-
 
 @app.route('/info/<name>', methods=['GET'])
 def info(name):
