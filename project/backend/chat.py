@@ -1,13 +1,17 @@
 import openai
 import os
 import datetime
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
+import pathlib
 
-# # Load the .env file
-# load_dotenv()
+# Load the .env file
+env_path = pathlib.Path('..') / '..' / '.env'
+
+# Load the .env file
+load_dotenv(dotenv_path=env_path.resolve())
 
 # Replace 'your-api-key' with your actual OpenAI API key
-openai.api_key = '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'
+openai.api_key = os.getenv('GPT')
 
 def get_response(country_name):
     response = openai.ChatCompletion.create(
