@@ -7,6 +7,7 @@ import earthDay from '../../assets/earth-day.jpeg'
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 import {useFetchYear} from "../../hooks/useFetchYear";
 import VerticalSlider from "../../components/Slider/Slider";
+import Popup from "../../components/Popup/Popup";
 
 const Home = () => {
   const globeEl = useRef();
@@ -62,6 +63,26 @@ const Home = () => {
     }
   });
 
+  const first= 'rgba(255, 254, 229, 0.55)';
+  const firstSide= 'rgba(255, 254, 229, 0.3)';
+  const second ='rgba(255, 247, 188, 0.55)';
+  const secondSide = 'rgba(255, 247, 188, 0.3)';
+  const third = 'rgba(254, 227, 145, 0.55)';
+  const thirdSide = 'rgba(254, 227, 145, 0.3)';
+  const fourth= 'rgba(253, 196, 79, 0.55)';
+  const fourthSide = 'rgba(253, 196, 79, 0.3)';
+  const fifth = 'rgba(252, 153, 41, 0.55)';
+  const fifthSide = 'rgba(252, 153, 41, 0.3)';
+  const sixth = 'rgba(236, 112, 19, 0.55)';
+  const sixthSide = 'rgba(236, 112, 19, 0.3)';
+  const seventh = 'rgba(204, 76, 1, 0.55)';
+  const seventhSide = 'rgba(204, 76, 1, 0.3)';
+  const eighth = 'rgba(153, 52, 4, 0.55)';
+  const eighthSide = 'rgba(153, 52, 4, 0.3)';
+  const ninth = 'rgba(102, 37, 6, 0.55)';
+  const ninthSide = 'rgba(102, 37, 6, 0.3)';
+
+
   const handleResize = () => {
     setWindowDimensions({
       width: window.innerWidth,
@@ -79,15 +100,53 @@ const Home = () => {
   const capColor = (d) => {
     if(d.properties.ADMIN === clickedCountry) {
       return 'rgba(255,0,0,0.55)';
+    } else if(yearEmissions[d.properties.ADMIN]<0.1){
+      return first;
+    } else if(yearEmissions[d.properties.ADMIN]<0.2){
+      return second;
+    } else if (yearEmissions[d.properties.ADMIN]<0.5){
+      return third;
+    } else if (yearEmissions[d.properties.ADMIN]<1){
+      return fourth;
+    } else if (yearEmissions[d.properties.ADMIN]<2){
+      return fifth;
+    } else if (yearEmissions[d.properties.ADMIN]<5){
+      return sixth;
+    } else if (yearEmissions[d.properties.ADMIN]<10){
+      return seventh;
+    } else if (yearEmissions[d.properties.ADMIN]<20){
+      return eighth;
+    } else if (yearEmissions[d.properties.ADMIN]>=20){
+      return ninth;
+    } else {
+      return first;
     }
-    return 'rgba(232,121,41,0.55)'
   }
 
   const sideColor = (d) => {
     if(d.properties.ADMIN === clickedCountry) {
       return 'rgba(170,0,0,0.55)';
+    } else if(yearEmissions[d.properties.ADMIN]<0.1){
+      return firstSide;
+    } else if(yearEmissions[d.properties.ADMIN]<0.2){
+      return secondSide;
+    } else if (yearEmissions[d.properties.ADMIN]<0.5){
+      return thirdSide;
+    } else if (yearEmissions[d.properties.ADMIN]<1){
+      return fourthSide;
+    } else if (yearEmissions[d.properties.ADMIN]<2){
+      return fifthSide;
+    } else if (yearEmissions[d.properties.ADMIN]<5){
+      return sixthSide;
+    } else if (yearEmissions[d.properties.ADMIN]<10){
+      return seventhSide;
+    } else if (yearEmissions[d.properties.ADMIN]<20){
+      return eighthSide;
+    } else if (yearEmissions[d.properties.ADMIN]>=20){
+      return ninthSide;
+    } else {
+      return firstSide;
     }
-    return 'rgba(138,59,0,0.3)'
   }
 
   function countryCenter(country) {
@@ -211,7 +270,10 @@ const Home = () => {
               }
               polygonsTransitionDuration={transitionDuration}
           />
+          
         </div>
+        <Popup state={focusState} name={clickedCountry} yaer={year} cumulative={5} />
+
       </div>
   );
 }

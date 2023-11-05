@@ -8,6 +8,7 @@ import * as d3 from "d3";
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 import {useFetchYear} from "../../hooks/useFetchYear";
 import VerticalSlider from "../../components/Slider/Slider";
+import Popup from "../../components/Popup/Popup";
 
 const GlobeTest = () => {
   const globeEl = useRef();
@@ -25,7 +26,7 @@ const GlobeTest = () => {
 
   const {countryEmissions,loading,error} =  useFetchEmissions(clickedCountry);
   const {yearEmissions, yearLoading, yearError} = useFetchYear(year);
-
+  
   useEffect(() => {
     // load data
     fetch(data)
@@ -200,6 +201,7 @@ const GlobeTest = () => {
               }
               polygonsTransitionDuration={transitionDuration}
           />
+        <Popup state={focusState} name={clickedCountry} yaer={year} cumulative={5} />
         </div>
   );
 }

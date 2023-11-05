@@ -18,9 +18,9 @@ def parse_global_data(file_path):
         reader = csv.DictReader(f)
         for row in reader:
             if row['Year'] in total_dict:
-                total_dict[row['Year']] += float(row['Cumulative CO2 emissions'])
+                total_dict[row['Year']] += float(row['Emissions'])
             else:
-                total_dict[row['Year']] = float(row['Cumulative CO2 emissions'])
+                total_dict[row['Year']] = float(row['Emissions'])
     
     with open(out, 'w',newline='') as csvfile:
         csv_writer = csv.writer(csvfile)

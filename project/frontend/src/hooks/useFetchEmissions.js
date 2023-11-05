@@ -15,7 +15,7 @@ export const useFetchEmissions = (value) => {
 
         const encodedQuery = encodeURIComponent(query);
         const encodedValue = encodeURIComponent(value);
-        const endpoint = `/get/${encodedQuery}/${encodedValue}`;
+        const endpoint = `/cumulative/${encodedQuery}/${encodedValue}`;
 
         const fetchData = async () => {
             try {

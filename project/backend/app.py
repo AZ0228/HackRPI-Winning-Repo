@@ -17,10 +17,16 @@ def hello_world():
     #return render_template('index.html')
 
 # define a route to get data based on a query and value
-@app.route('/get/<query>/<value>', methods=['GET'])
-def hello(query, value):
+@app.route('/cumulative/<query>/<value>', methods=['GET'])
+def cumulative(query, value):
     # parse the CSV and return the result as json
     result = parse_csv('emissions.csv', {query: value})
+    return jsonify(result), 200
+
+@app.route('/capita/<query>/<value>', methods=['GET'])
+def capita(query, value):
+    # parse the CSV and return the result as json
+    result = parse_csv('capita.csv', {query: value})
     return jsonify(result), 200
 
 # define a route to get information for a given name
