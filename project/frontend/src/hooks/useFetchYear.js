@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-export const useFetchEmissions = (value) => {
-    const query = 'Entity'
-    const [countryEmissions, setData] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+export const useFetchYear = (value) => {
+    const query = 'Year'
+    const [yearEmissions, setData] = useState(null);
+    const [yearLoading, setLoading] = useState(false);
+    const [yearError, setError] = useState(null);
     
     useEffect(() => {
         if (value === null || value === undefined || value === '') {
@@ -41,5 +41,5 @@ export const useFetchEmissions = (value) => {
         fetchData();
     }, [query, value]);
 
-    return { countryEmissions, loading, error };
+    return { yearEmissions, yearLoading, yearError };
 };
