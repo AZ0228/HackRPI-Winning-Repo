@@ -22,8 +22,3 @@ def get_response(country_name):
     )
     return response['choices'][0]['message']['content']
 
-prompt = "United States"
-now = datetime.datetime.now()
-response_text = get_response(prompt)
-print(datetime.datetime.now() - now)
-print(response_text)
