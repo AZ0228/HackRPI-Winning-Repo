@@ -33,3 +33,11 @@ def parse_global_data(file_path):
             csv_writer.writerow([key, value])
     return 
 
+# def parse_geojson(file_path):
+#     with open(file_path, 'r') as f:
+#         reader = csv.DictReader(f)
+#         for row in reader:
+#             if parse_csv('emissions.csv',{'Entity': row['features']['ADMIN']})=={}:
+#                 print(row['ADMIN'])
+
+# parse_geojson('data.geojson')

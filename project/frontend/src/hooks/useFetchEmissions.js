@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 
 export const useFetchEmissions = (query, value) => {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [data1, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    const encodedQuery = encodeURIComponent(query);
-    const encodedValue = encodeURIComponent(value);
-    const endpoint = `/get/${encodedQuery}/${encodedValue}`;
     
     useEffect(() => {
+        if (value === null || value === undefined || value === '') {
+            return;
+        }
+
+        setLoading(true);
+
+        const encodedQuery = encodeURIComponent(query);
+        const encodedValue = encodeURIComponent(value);
+        const endpoint = `/get/${encodedQuery}/${encodedValue}`;
+
         const fetchData = async () => {
             try {
                 const response = await fetch(endpoint);
@@ -32,7 +38,7 @@ export const useFetchEmissions = (query, value) => {
         };
 
         fetchData();
-    }, [endpoint]);
+    }, [query, value]);
 
-    return { data, loading, error };
+    return { data1, loading, error };
 };

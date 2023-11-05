@@ -5,6 +5,7 @@ import earthBlueGreen from '../../assets/earth-blue-marble.jpeg';
 import earthDark from '../../assets/earth-dark.jpeg';
 import earthDay from '../../assets/earth-day.jpeg'
 import * as d3 from "d3";
+import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 
 const GlobeTest = () => {
   const globeEl = useRef();
@@ -16,13 +17,16 @@ const GlobeTest = () => {
     height: window.innerHeight,
   });
 
+  const [clickedCountry, setClickedCountry] = useState(null);
+
+  const {data1,loading,error} =  useFetchEmissions('Entity', clickedCountry);
+
   useEffect(() => {
     // load data
     fetch(data)
         .then((res) => res.json())
         .then((countries) => {
           setCountries(countries);
-
           // setTimeout(() => {
           //   setTransitionDuration(1000);
           //   setAltitude(() => feat => Math.max(0.05, Math.sqrt(+feat.properties.POP_EST) * 2e-5));
@@ -37,6 +41,17 @@ const GlobeTest = () => {
     globeEl.current.controls().enableZoom = false;
     globeEl.current.pointOfView({ altitude: 2.7 }, 3000);
   }, []);
+
+  useEffect(() => {
+    if (data1 && !loading && !error) {
+      // Handle the data fetched when a polygon is clicked
+      console.log("Emissions data:", data1);
+      // Perform other actions based on the fetched data
+    } else if (error || loading) {
+        console.log("Error fetching data:", error);
+    }
+    console.log('got here');
+  }, [data1, loading, error]);
 
   const handleResize = () => {
     setWindowDimensions({
@@ -70,6 +85,7 @@ const GlobeTest = () => {
             onPolygonClick={(polygon,event, {polyLat, polyLng, polyAlt}) => {
               console.log("Polygon clicked: ", polygon.properties.ADMIN, polygon);
               // console.log("Poly Coords: LAT-" + polyLat + "| LNG-" + polyLng + "| ALT-" + polyAlt);
+              setClickedCountry(polygon.properties.ADMIN);
             }}
             polygonsTransitionDuration={transitionDuration}
         />

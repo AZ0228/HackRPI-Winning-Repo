@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <GlobeTest />
-    <Test query="Entity" value="United States" />
+    {/* <Test query="Entity" value="United States" /> */}
   </React.StrictMode>
 );
 
