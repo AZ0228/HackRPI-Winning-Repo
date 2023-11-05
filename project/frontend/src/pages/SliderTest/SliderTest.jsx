@@ -1,4 +1,5 @@
 import VerticalSlider from "../../components/Slider/Slider";
+import './Slider.css';
 function SliderTest() {
 
   return (

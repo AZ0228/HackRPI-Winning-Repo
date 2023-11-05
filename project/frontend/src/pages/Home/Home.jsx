@@ -10,6 +10,7 @@ import VerticalSlider from "../../components/Slider/Slider";
 // import {currentSliderYear} from '../../components/Slider/Slider';
 // import {currentYear, setCurrentYear} from 'VerticalSlider';
 import Popup from "../../components/Popup/Popup";
+import './Styles.css';
 
 const Home = () => {
   const globeEl = useRef();
@@ -215,6 +216,7 @@ const Home = () => {
         </div>
 
         <div className="globe">
+          <div className="yearContainer"><h1>{year}</h1></div>
           <Globe style={{position: 'absolute'}}
               ref={globeEl}
               showAtmosphere={true}
@@ -289,7 +291,7 @@ const Home = () => {
           />
           
         </div>
-        {countryEmissions ? <Popup state={focusState} name={clickedCountry} year={year} capita={yearEmissions[clickedCountry]} />: 'fetching'}
+        {countryEmissions ? <Popup state={focusState} name={clickedCountry} year={year}z capita={yearEmissions[clickedCountry]} />: ''}
 
       </div>
   );

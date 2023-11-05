@@ -1,3 +1,21 @@
 .MuiSlider-colorPrimary {
     --colorPrimary: red;
 }
+
+.yearContainer{
+    position:absolute;
+    width:100%;
+    top:0;
+    left:0;
+    text-align: center;
+    margin-top:60px;
+    z-index: 3;
+}
+h1{
+    font-size:40px;
+    width:100%;
+    top:0;
+    left:0;
+    text-align: center;
+    margin-top:60px;
+}
