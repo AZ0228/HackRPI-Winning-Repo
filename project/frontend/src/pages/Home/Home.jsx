@@ -10,6 +10,7 @@ import VerticalSlider from "../../components/Slider/Slider";
 // import {currentSliderYear} from '../../components/Slider/Slider';
 // import {currentYear, setCurrentYear} from 'VerticalSlider';
 import Popup from "../../components/Popup/Popup";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Home = () => {
   const globeEl = useRef();
@@ -203,7 +204,7 @@ const Home = () => {
 
   return (
       <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems: 'center', backgroundColor: 'rgb(65,65,65)'}}>
-
+        <Navbar/>
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -289,7 +290,7 @@ const Home = () => {
           />
           
         </div>
-        {countryEmissions ? <Popup state={focusState} name={clickedCountry} year={year} capita={yearEmissions[clickedCountry]} />: 'fetching'}
+        {countryEmissions ? <Popup state={focusState} name={clickedCountry} year={year} capita={yearEmissions[clickedCountry]} />: ''}
 
       </div>
   );

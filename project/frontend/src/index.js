@@ -7,10 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import GlobeTest from "./pages/GlobeTest/GlobeTest";
 import SliderTest from "./pages/SliderTest/SliderTest";
 import Home from "./pages/Home/Home.jsx"
+import NavbarTest from "./pages/NavbarTest/NavbarTest";
+import Intro from "./pages/Intro/Intro";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    {/*<NavbarTest />*/}
+    {/*<Intro />*/}
     <Home />
     {/*<SliderTest />*/}
     {/*<GlobeTest />*/}
