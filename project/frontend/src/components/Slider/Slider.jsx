@@ -10,6 +10,7 @@ import { useFectchYear } from '../../hooks/useFetchYear.js';
 const VerticalSlider = () => {
   const [currentYear, setCurrentYear] = useState(valToYear(226));
 
+
   function valToYear(currentValue) {
     if (0 <= currentValue && currentValue <= 5) {
       return (1750 + 10*currentValue);

@@ -7,6 +7,8 @@ import earthDay from '../../assets/earth-day.jpeg'
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 import {useFetchYear} from "../../hooks/useFetchYear";
 import VerticalSlider from "../../components/Slider/Slider";
+import {currentSliderYear} from '../../components/Slider/Slider';
+// import {currentYear, setCurrentYear} from 'VerticalSlider';
 
 const Home = () => {
   const globeEl = useRef();
@@ -20,10 +22,10 @@ const Home = () => {
   const [focusState, setFocusState] = useState('globe');
 
   const [clickedCountry, setClickedCountry] = useState(null);
-  const [year, setYear] = useState(2021);
+  // const [year, setYear] = useState(currentSliderYear);
 
   const {countryEmissions,loading,error} =  useFetchEmissions(clickedCountry);
-  const {yearEmissions, yearLoading, yearError} = useFetchYear(year);
+  const {yearEmissions, yearLoading, yearError} = useFetchYear(VerticalSlider.currentYear);
 
   useEffect(() => {
     // load data
@@ -57,6 +59,7 @@ const Home = () => {
         };
 
         globeEl.current.pointOfView(mapCenter, transitionSpeed);
+        firstCenter = false;
       }
       console.log("POV ran...")
     }
@@ -158,11 +161,9 @@ const Home = () => {
               polygonCapColor={capColor}
               polygonSideColor={sideColor}
               polygonLabel={({ properties: d }) => `
-                <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
-                Population: <i>${Math.round(+d.POP_EST / 1e4) / 1e2}M</i>
-              `}
+                <b>${d.ADMIN} `}
               onGlobeClick={(coords, e) => {
-                if (focusState === 'country') {
+                if (focusState !== 'globe') {
                   const mapCenter = {
                     lat: initialCenter.latitude,
                     lng: initialCenter.longitude,
@@ -194,19 +195,29 @@ const Home = () => {
                     altitude: centerCoords[2]
                   };
                 }
-
-                if (focusState === 'country') {
-                  setTimeout(() => {
-                    globeEl.current.pointOfView(mapCenter, transitionSpeed);
-                  }, 1500)
-                  globeEl.current.pointOfView({altitude: 2.3}, 1700);
-                } else {
+                if (focusState === polygon.properties.ADMIN) {
+                  mapCenter = {
+                    lat: initialCenter.latitude,
+                    lng: initialCenter.longitude,
+                    altitude: initialCenter.altitude
+                  };
                   globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                  globeEl.current.controls().autoRotate = true;
+                  setFocusState('globe')
+                  setClickedCountry(null)
+                } else {
+                  if (focusState !== 'globe' && focusState !== polygon.properties.ADMIN) {
+                    setTimeout(() => {
+                      globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                    }, 1500)
+                    globeEl.current.pointOfView({altitude: 2.3}, 1700);
+                  } else {
+                    globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                  }
+                  globeEl.current.controls().autoRotate = false;
+                  setFocusState(polygon.properties.ADMIN)
+                  setClickedCountry(polygon.properties.ADMIN);
                 }
-
-                globeEl.current.controls().autoRotate = false;
-                setFocusState('country')
-                setClickedCountry(polygon.properties.ADMIN);
               }
               }
               polygonsTransitionDuration={transitionDuration}
