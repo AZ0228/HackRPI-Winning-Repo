@@ -32,6 +32,8 @@ def capita(query, value):
 # define a route to get information for a given name
 @app.route('/info/<name>', methods=['GET'])
 def info(name):
+    if name == "null":
+        return jsonify({}), 200
     # record the current time
     now = datetime.datetime.now()
     ret = {

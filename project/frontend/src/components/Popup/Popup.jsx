@@ -6,7 +6,10 @@ import {useFetchGPT} from "../../hooks/useFetchGPT";
 
 function Popup({state, name, year, cumulative, capita}){
     const [popupClass,setPopupClass] = useState("hidden");
-    const {data, loading, error } = useFetchGPT(country);     
+
+    const {data, loading, error } = useFetchGPT(name);     
+
+
 
     useEffect(() => {
         if (state === "globe") {
@@ -15,18 +18,29 @@ function Popup({state, name, year, cumulative, capita}){
             setPopupClass("show");
         }
     }, [state]);
+    
+    if(name === null){
+        return (            
+        <div className="popup">
+        <div className={`popup-window ${popupClass}`}>
+            <p>Generating ideas...</p>
+        </div>
+        </div>);
+
+    }
 
     if (loading) {
-        <div className="popup">
-                <div className={`popup-window ${popupClass}`}>
-                    <h1>{name}</h1>
-                    <p>Per Capita C02 emissions in {year}:<br></br> <b>{Number(capita).toFixed(2)}</b> tons of C02</p>
-                    <br></br>
-                    <p>What could the {name} do to decrease their carbon footprint?</p>
-                    <br></br>
-                    <p>Generating ideas...</p>
-                </div>
-        </div>
+        return(
+            <div className="popup">
+                    <div className={`popup-window ${popupClass}`}>
+                        <h1>{name}</h1>
+                        <p>Per Capita C02 emissions in {year}:<br></br> <b>{Number(capita).toFixed(2)}</b> tons of C02</p>
+                        <br></br>
+                        <p>What could the {name} do to decrease their carbon footprint?</p>
+                        <br></br>
+                        <p>Generating ideas...</p>
+                    </div>
+            </div>);
     }
     
 
