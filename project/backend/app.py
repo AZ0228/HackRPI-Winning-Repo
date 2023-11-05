@@ -2,15 +2,19 @@ from flask import Flask, jsonify, request
 from data import parse_csv
 from chat import get_response
 import datetime
-from flask import Flask, render_template
+import os
+from flask import Flask, render_template, send_from_directory
 
-app = Flask(__name__)
+frontend_dir = os.path.abspath('../frontend/build')
+
+app = Flask(__name__, static_folder=frontend_dir, static_url_path='')
 
 # define a route for the root URL
 @app.route('/', methods=['GET'])
 def hello_world():
     # render the index.html template
-    return render_template('index.html')
+    return send_from_directory(app.static_folder, 'index.html')
+    #return render_template('index.html')
 
 # define a route to get data based on a query and value
 @app.route('/get/<query>/<value>', methods=['GET'])
