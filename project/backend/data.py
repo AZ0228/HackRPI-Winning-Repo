@@ -35,9 +35,14 @@ def parse_global_data(file_path):
 
 # def parse_geojson(file_path):
 #     with open(file_path, 'r') as f:
-#         reader = csv.DictReader(f)
-#         for row in reader:
-#             if parse_csv('emissions.csv',{'Entity': row['features']['ADMIN']})=={}:
-#                 print(row['ADMIN'])
+#         data = json.load(f)
+#         for feature in data['features']:
+#             if 'ADMIN' in feature['properties']:
+#                 admin_name = feature['properties']['ADMIN']
+#                 if parse_csv('emissions.csv',{'Entity': admin_name}):
+#                     pass
+#                 else:
+#                     print(f"{admin_name} does not exist in the dictionary.")
+
 
 # parse_geojson('data.geojson')

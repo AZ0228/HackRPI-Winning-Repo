@@ -6,6 +6,7 @@ import earthDark from '../../assets/earth-dark.jpeg';
 import earthDay from '../../assets/earth-day.jpeg'
 import * as d3 from "d3";
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
+import {useFetchYear} from "../../hooks/useFetchYear";
 
 const GlobeTest = () => {
   const globeEl = useRef();
@@ -19,8 +20,10 @@ const GlobeTest = () => {
   const [focusState, setFocusState] = useState('globe');
 
   const [clickedCountry, setClickedCountry] = useState(null);
+  const [year, setYear] = useState(2021);
 
-  const {data1,loading,error} =  useFetchEmissions('Entity', clickedCountry);
+  const {countryEmissions,loading,error} =  useFetchEmissions(clickedCountry);
+  const {yearEmissions, yearLoading, yearError} = useFetchYear(year);
 
   useEffect(() => {
     // load data
@@ -65,6 +68,27 @@ const GlobeTest = () => {
       height: window.innerHeight,
     });
   };
+
+  const polygon = (d) => {
+    if(d.properties.ADMIN === clickedCountry) {
+      return altitude * 2;
+    }
+    return altitude
+  }
+
+  const capColor = (d) => {
+    if(d.properties.ADMIN === clickedCountry) {
+      return 'rgba(255,0,0,0.55)';
+    }
+    return 'rgba(232,121,41,0.55)'
+  }
+  
+  const sideColor = (d) => {
+    if(d.properties.ADMIN === clickedCountry) {
+      return 'rgba(170,0,0,0.55)';
+    }
+    return 'rgba(138,59,0,0.3)'
+  }
 
   function countryCenter(country) {
     const country_coords = country.geometry.coordinates[0];
@@ -118,9 +142,9 @@ const GlobeTest = () => {
             globeImageUrl={earthDark}
             backgroundColor={'rgb(65,65,65)'}
             polygonsData={countries.features.filter((d) => d.properties.ISO_A2 !== 'AQ')}
-            polygonAltitude={altitude}
-            polygonCapColor={() => baseAvg_cap}
-            polygonSideColor={() => baseAvg_side}
+            polygonAltitude={polygon}
+            polygonCapColor={capColor}
+            polygonSideColor={sideColor}
             polygonLabel={({ properties: d }) => `
               <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
               Population: <i>${Math.round(+d.POP_EST / 1e4) / 1e2}M</i>

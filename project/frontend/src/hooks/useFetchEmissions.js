@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
-export const useFetchEmissions = (query, value) => {
-    const [data1, setData] = useState(null);
+export const useFetchEmissions = (value) => {
+    const query = 'Entity'
+    const [countryEmissions, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     
@@ -40,5 +41,5 @@ export const useFetchEmissions = (query, value) => {
         fetchData();
     }, [query, value]);
 
-    return { data1, loading, error };
+    return { countryEmissions, loading, error };
 };
