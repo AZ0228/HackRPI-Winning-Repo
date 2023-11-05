@@ -10,7 +10,6 @@ env_path = pathlib.Path('..') / '..' / '.env'
 # Load the .env file
 load_dotenv(dotenv_path=env_path.resolve())
 
-# Replace 'your-api-key' with your actual OpenAI API key
 openai.api_key = os.getenv('GPT')
 
 def get_response(country_name):

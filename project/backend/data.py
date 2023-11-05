@@ -4,7 +4,6 @@ import csv
 import datetime
 import random
 
-
 def parse_csv(file_path, query):
     with open(file_path, 'r') as f:
         reader = csv.DictReader(f)
