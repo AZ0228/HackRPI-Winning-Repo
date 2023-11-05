@@ -34,8 +34,8 @@ const GlobeTest = () => {
     // Auto-rotate
     globeEl.current.controls().autoRotate = true;
     globeEl.current.controls().autoRotateSpeed = 0.5;
-
-    globeEl.current.pointOfView({ altitude: 2.7 }, 5000);
+    globeEl.current.controls().enableZoom = false;
+    globeEl.current.pointOfView({ altitude: 2.7 }, 3000);
   }, []);
 
   const handleResize = () => {
@@ -67,6 +67,10 @@ const GlobeTest = () => {
               <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
               Population: <i>${Math.round(+d.POP_EST / 1e4) / 1e2}M</i>
             `}
+            onPolygonClick={(polygon,event, {polyLat, polyLng, polyAlt}) => {
+              console.log("Polygon clicked: ", polygon.properties.ADMIN, polygon);
+              // console.log("Poly Coords: LAT-" + polyLat + "| LNG-" + polyLng + "| ALT-" + polyAlt);
+            }}
             polygonsTransitionDuration={transitionDuration}
         />
       </div>
