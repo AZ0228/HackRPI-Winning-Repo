@@ -172,6 +172,7 @@ const GlobeTest = () => {
                 globeEl.current.pointOfView(mapCenter, transitionSpeed);
                 globeEl.current.controls().autoRotate = true;
                 setFocusState('globe')
+                setClickedCountry(null);
               } else {
                 const centerCoords = countryCenter(polygon)
                 console.log("focus state is globe, focusing country... lat-" + coords.lat + "| lng-" + coords.lng + " || " +
@@ -193,7 +194,7 @@ const GlobeTest = () => {
                     altitude: centerCoords[2]
                   };
                 }
-
+                setClickedCountry(polygon.properties.ADMIN);
                 globeEl.current.pointOfView(mapCenter, transitionSpeed);
                 globeEl.current.controls().autoRotate = false;
                 setFocusState('country')
