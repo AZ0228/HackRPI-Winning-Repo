@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 
-export const useFetchEmissions = (query, value) => {
+export const useFetchGPT = (country) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const encodedQuery = encodeURIComponent(query);
-    const encodedValue = encodeURIComponent(value);
-    const endpoint = `/get/${encodedQuery}/${encodedValue}`;
+    const encodedCountry = encodeURIComponent(country);
+    const endpoint = `/info/${encodedCountry}`;
     
     useEffect(() => {
         const fetchData = async () => {
