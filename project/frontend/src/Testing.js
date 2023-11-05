@@ -2,11 +2,7 @@ import React from 'react';
 import { useFetchEmissions } from './hooks/useFetchEmissions';
 
 function Test({query, value}) {
-    const encodedQuery = encodeURIComponent(query);
-    const encodedValue = encodeURIComponent(value);
-    const url = `/get/${encodedQuery}/${encodedValue}`;
-
-    const {data, loading, error} = useFetchEmissions(url);
+    const {data, loading, error} = useFetchEmissions(query, value);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
