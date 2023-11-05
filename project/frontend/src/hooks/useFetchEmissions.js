@@ -15,7 +15,7 @@ export const useFetchEmissions = (value) => {
 
         const encodedQuery = encodeURIComponent(query);
         const encodedValue = encodeURIComponent(value);
-        const endpoint = `/get/${encodedQuery}/${encodedValue}`;
+        const endpoint = `/cumulative/${encodedQuery}/${encodedValue}`;
 
         const fetchData = async () => {
             try {
@@ -31,6 +31,7 @@ export const useFetchEmissions = (value) => {
 
                 const jsonData = await response.json();
                 setData(jsonData);
+                console.log(jsonData);
             } catch (error) {
                 setError(error.message);
             } finally {

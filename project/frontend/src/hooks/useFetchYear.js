@@ -15,7 +15,7 @@ export const useFetchYear = (value) => {
 
         const encodedQuery = encodeURIComponent(query);
         const encodedValue = encodeURIComponent(value);
-        const endpoint = `/get/${encodedQuery}/${encodedValue}`;
+        const endpoint = `/capita/${encodedQuery}/${encodedValue}`;
 
         const fetchData = async () => {
             try {
@@ -30,7 +30,13 @@ export const useFetchYear = (value) => {
                 }
 
                 const jsonData = await response.json();
-                setData(jsonData);
+                const emissionsData = {};
+                for (let i = 0; i < jsonData.length; i++) {
+                    const currentItem = jsonData[i];
+                    emissionsData[currentItem['Entity']] = currentItem['Emissions'];
+                }
+                console.log(emissionsData);
+                setData(emissionsData);
             } catch (error) {
                 setError(error.message);
             } finally {
