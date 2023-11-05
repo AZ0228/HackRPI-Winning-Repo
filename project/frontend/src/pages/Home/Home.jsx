@@ -4,12 +4,11 @@ import data from '../../assets/data.geojson';
 import earthBlueGreen from '../../assets/earth-blue-marble.jpeg';
 import earthDark from '../../assets/earth-dark.jpeg';
 import earthDay from '../../assets/earth-day.jpeg'
-import * as d3 from "d3";
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 import {useFetchYear} from "../../hooks/useFetchYear";
 import VerticalSlider from "../../components/Slider/Slider";
 
-const GlobeTest = () => {
+const Home = () => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: []});
   const [altitude, setAltitude] = useState(0.03);
@@ -83,7 +82,7 @@ const GlobeTest = () => {
     }
     return 'rgba(232,121,41,0.55)'
   }
-  
+
   const sideColor = (d) => {
     if(d.properties.ADMIN === clickedCountry) {
       return 'rgba(170,0,0,0.55)';
@@ -135,8 +134,20 @@ const GlobeTest = () => {
   const baseAvg_side = 'rgba(138,59,0,0.3)';
 
   return (
-        <div className="globe" style={{ margin: 'auto auto' }}>
-          <Globe
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems: 'center', backgroundColor: 'rgb(65,65,65)'}}>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          zIndex: '50',
+          position: 'absolute',
+          left: '10px',
+          height: '100%'}}>
+          <VerticalSlider />
+        </div>
+
+        <div className="globe">
+          <Globe style={{position: 'absolute'}}
               ref={globeEl}
               showAtmosphere={true}
               atmosphereColor={'rgb(40,40,40)'}
@@ -163,45 +174,45 @@ const GlobeTest = () => {
                 }
               }}
               onPolygonClick={(polygon, e, coords)  => {
-                  const centerCoords = countryCenter(polygon)
-                  console.log("focus state is globe, focusing country... lat-" + coords.lat + "| lng-" + coords.lng + " || " +
-                      "centerLat-" + centerCoords[0] + "centerLng-" + centerCoords[1])
+                const centerCoords = countryCenter(polygon)
+                console.log("focus state is globe, focusing country... lat-" + coords.lat + "| lng-" + coords.lng + " || " +
+                    "centerLat-" + centerCoords[0] + "centerLng-" + centerCoords[1])
 
-                  const latDifference = coords.lat - centerCoords[0]
-                  const lngDifference = coords.lng - centerCoords[1]
-                  let mapCenter;
-                  if ( Math.abs(latDifference) >= 20.0 || Math.abs(lngDifference) >= 20.0) {
-                    mapCenter = {
-                      lat: coords.lat,
-                      lng: coords.lng,
-                      altitude: centerCoords[2]
-                    };
-                  } else {
-                    mapCenter = {
-                      lat: centerCoords[0],
-                      lng: centerCoords[1],
-                      altitude: centerCoords[2]
-                    };
-                  }
-
-                  if (focusState === 'country') {
-                    setTimeout(() => {
-                      globeEl.current.pointOfView(mapCenter, transitionSpeed);
-                    }, 1500)
-                    globeEl.current.pointOfView({altitude: 2.3}, 1700);
-                  } else {
-                    globeEl.current.pointOfView(mapCenter, transitionSpeed);
-                  }
-
-                  globeEl.current.controls().autoRotate = false;
-                  setFocusState('country')
-                  setClickedCountry(polygon.properties.ADMIN);
+                const latDifference = coords.lat - centerCoords[0]
+                const lngDifference = coords.lng - centerCoords[1]
+                let mapCenter;
+                if ( Math.abs(latDifference) >= 20.0 || Math.abs(lngDifference) >= 20.0) {
+                  mapCenter = {
+                    lat: coords.lat,
+                    lng: coords.lng,
+                    altitude: centerCoords[2]
+                  };
+                } else {
+                  mapCenter = {
+                    lat: centerCoords[0],
+                    lng: centerCoords[1],
+                    altitude: centerCoords[2]
+                  };
                 }
+
+                if (focusState === 'country') {
+                  setTimeout(() => {
+                    globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                  }, 1500)
+                  globeEl.current.pointOfView({altitude: 2.3}, 1700);
+                } else {
+                  globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                }
+
+                globeEl.current.controls().autoRotate = false;
+                setFocusState('country')
+                setClickedCountry(polygon.properties.ADMIN);
+              }
               }
               polygonsTransitionDuration={transitionDuration}
           />
         </div>
+      </div>
   );
 }
-export default GlobeTest;
-
+export default Home;
