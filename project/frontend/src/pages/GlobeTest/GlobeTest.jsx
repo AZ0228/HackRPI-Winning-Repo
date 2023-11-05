@@ -16,6 +16,7 @@ const GlobeTest = () => {
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [focusState, setFocusState] = useState('globe');
 
   const [clickedCountry, setClickedCountry] = useState(null);
 
@@ -34,24 +35,29 @@ const GlobeTest = () => {
         });
   }, []);
 
-  useEffect(() => {
-    // Auto-rotate
-    globeEl.current.controls().autoRotate = true;
-    globeEl.current.controls().autoRotateSpeed = 0.5;
-    globeEl.current.controls().enableZoom = false;
-    globeEl.current.pointOfView({ altitude: 2.7 }, 3000);
-  }, []);
+  const transitionSpeed = 3000;
+  let initialCenter = { latitude: 23.0, longitude: -80.0, altitude: 2.7 };
+  let firstCenter = true;
 
   useEffect(() => {
-    if (data1 && !loading && !error) {
-      // Handle the data fetched when a polygon is clicked
-      console.log("Emissions data:", data1);
-      // Perform other actions based on the fetched data
-    } else if (error || loading) {
-        console.log("Error fetching data:", error);
+    if (globeEl.current && focusState === 'globe') {
+      // Auto-rotate
+      globeEl.current.controls().autoRotate = true;
+      globeEl.current.controls().autoRotateSpeed = 0.5;
+      globeEl.current.controls().enableZoom = false;
+      // globeEl.current.pointOfView({ altitude: 2.7 }, 3000);
+      if (firstCenter) {
+        const mapCenter = {
+          lat: initialCenter.latitude,
+          lng: initialCenter.longitude,
+          altitude: initialCenter.altitude
+        };
+
+        globeEl.current.pointOfView(mapCenter, transitionSpeed);
+      }
+      console.log("POV ran...")
     }
-    console.log('got here');
-  }, [data1, loading, error]);
+  });
 
   const handleResize = () => {
     setWindowDimensions({
@@ -59,6 +65,43 @@ const GlobeTest = () => {
       height: window.innerHeight,
     });
   };
+
+  function countryCenter(country) {
+    const country_coords = country.geometry.coordinates[0];
+    console.log(country_coords.length);
+    let nestedCountryCoords = false;
+    if (country_coords.length <= 1) {
+      console.log(country_coords[0].length);
+      nestedCountryCoords = true;
+    }
+
+    const numCoordinates =  nestedCountryCoords ? country_coords[0].length: country_coords.length;
+    let x = 0;
+    let y = 0;
+    let z = 0;
+
+    let realCoords = nestedCountryCoords ? country_coords[0]: country_coords;
+
+    for (const [lat, lon] of realCoords) {
+      const latRad = (lat * Math.PI) / 180;
+      const lonRad = (lon * Math.PI) / 180;
+
+      x += Math.cos(latRad) * Math.cos(lonRad);
+      y += Math.cos(latRad) * Math.sin(lonRad);
+      z += Math.sin(latRad);
+    }
+
+    x /= numCoordinates;
+    y /= numCoordinates;
+    z /= numCoordinates;
+
+    const centerLon = Math.atan2(y, x);
+    const hyp = Math.sqrt(x * x + y * y);
+    const centerLat = Math.atan2(z, hyp);
+
+    // if (nestedCountryCoords) {return [centerLat * (180 / Math.PI), centerLon * (180 / Math.PI), 1.6]; }
+    return [centerLon * (180 / Math.PI), centerLat * (180 / Math.PI),  1.6];
+  }
 
   const baseGreen_cap = 'rgba(7,120,0,0.55)';
   const baseGreen_side = 'rgba(0,54,0,0.3)';
@@ -82,10 +125,55 @@ const GlobeTest = () => {
               <b>${d.ADMIN} (${d.ISO_A2})</b> <br />
               Population: <i>${Math.round(+d.POP_EST / 1e4) / 1e2}M</i>
             `}
-            onPolygonClick={(polygon,event, {polyLat, polyLng, polyAlt}) => {
-              console.log("Polygon clicked: ", polygon.properties.ADMIN, polygon);
-              // console.log("Poly Coords: LAT-" + polyLat + "| LNG-" + polyLng + "| ALT-" + polyAlt);
-              setClickedCountry(polygon.properties.ADMIN);
+            onGlobeClick={(coords, e) => {
+              if (focusState === 'country') {
+                const mapCenter = {
+                  lat: initialCenter.latitude,
+                  lng: initialCenter.longitude,
+                  altitude: initialCenter.altitude
+                };
+                globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                globeEl.current.controls().autoRotate = true;
+                setFocusState('globe')
+              }
+            }}
+            onPolygonClick={(polygon, e, coords)  => {
+              if (focusState === 'country') {
+                const mapCenter = {
+                  lat: initialCenter.latitude,
+                  lng: initialCenter.longitude,
+                  altitude: initialCenter.altitude
+                };
+                console.log("focus state is country, focusing globe... initialLat-" + initialCenter.latitude + "| initialLng-" + initialCenter.longitude)
+                globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                globeEl.current.controls().autoRotate = true;
+                setFocusState('globe')
+              } else {
+                const centerCoords = countryCenter(polygon)
+                console.log("focus state is globe, focusing country... lat-" + coords.lat + "| lng-" + coords.lng + " || " +
+                    "centerLat-" + centerCoords[0] + "centerLng-" + centerCoords[1])
+
+                const latDifference = coords.lat - centerCoords[0]
+                const lngDifference = coords.lng - centerCoords[1]
+                let mapCenter;
+                if ( Math.abs(latDifference) >= 20.0 || Math.abs(lngDifference) >= 20.0) {
+                  mapCenter = {
+                    lat: coords.lat,
+                    lng: coords.lng,
+                    altitude: centerCoords[2]
+                  };
+                } else {
+                  mapCenter = {
+                    lat: centerCoords[0],
+                    lng: centerCoords[1],
+                    altitude: centerCoords[2]
+                  };
+                }
+
+                globeEl.current.pointOfView(mapCenter, transitionSpeed);
+                globeEl.current.controls().autoRotate = false;
+                setFocusState('country')
+              }
             }}
             polygonsTransitionDuration={transitionDuration}
         />
@@ -93,3 +181,4 @@ const GlobeTest = () => {
   );
 }
 export default GlobeTest;
+
