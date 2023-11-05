@@ -31,6 +31,7 @@ export const useFetchEmissions = (value) => {
 
                 const jsonData = await response.json();
                 setData(jsonData);
+                console.log(jsonData);
             } catch (error) {
                 setError(error.message);
             } finally {

@@ -6,7 +6,7 @@ import '../../assets/fonts.css'
 
 
 
-function Popup({state, name, year, cumulative}){
+function Popup({state, name, year, cumulative, capita}){
     const [popupClass,setPopupClass] = useState("hidden");
 
     useEffect(() => {
@@ -17,11 +17,13 @@ function Popup({state, name, year, cumulative}){
         }
     }, [state]);
 
+
+
     return (
         <div className="popup">
                 <div className={`popup-window ${popupClass}`}>
                     <h1>{name}</h1>
-                    <p>Cumulative c02 emissions in {year}: <b>{cumulative}</b></p>
+                    <p>Per Capita C02 emissions in {year}: <b>{Number(capita).toFixed(2)}</b> tons of C02</p>
                 </div>
         </div>
     );

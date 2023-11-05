@@ -13,6 +13,7 @@ h1{
     color: #F8F8F8;
 }
 
+
 button{
     background-color:rgba(47, 45, 46, 0.52);
     text-decoration: none;
@@ -26,6 +27,8 @@ button{
 .popup-window{
     height:60%;
     width:55%;
+    color: #F8F8F8;
+    flex-direction: column;
     background: rgba(47, 45, 46, 0.52);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);

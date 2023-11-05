@@ -7,7 +7,7 @@ import earthDay from '../../assets/earth-day.jpeg'
 import {useFetchEmissions} from "../../hooks/useFetchEmissions";
 import {useFetchYear} from "../../hooks/useFetchYear";
 import VerticalSlider from "../../components/Slider/Slider";
-import {currentSliderYear} from '../../components/Slider/Slider';
+// import {currentSliderYear} from '../../components/Slider/Slider';
 // import {currentYear, setCurrentYear} from 'VerticalSlider';
 import Popup from "../../components/Popup/Popup";
 
@@ -23,10 +23,10 @@ const Home = () => {
   const [focusState, setFocusState] = useState('globe');
 
   const [clickedCountry, setClickedCountry] = useState(null);
-  // const [year, setYear] = useState(currentSliderYear);
+  const [year, setYear] = useState(2021);
 
   const {countryEmissions,loading,error} =  useFetchEmissions(clickedCountry);
-  const {yearEmissions, yearLoading, yearError} = useFetchYear(VerticalSlider.currentYear);
+  const {yearEmissions, yearLoading, yearError} = useFetchYear(year);
 
   useEffect(() => {
     // load data
@@ -41,7 +41,7 @@ const Home = () => {
         });
   }, []);
 
-  const transitionSpeed = 3000;
+  const transitionSpeed = 1500;
   let initialCenter = { latitude: 23.0, longitude: -80.0, altitude: 2.7 };
   let firstCenter = true;
 
@@ -59,12 +59,18 @@ const Home = () => {
           altitude: initialCenter.altitude
         };
 
-        globeEl.current.pointOfView(mapCenter, transitionSpeed);
+        globeEl.current.pointOfView(mapCenter, 3000);
         firstCenter = false;
       }
       console.log("POV ran...")
     }
   });
+
+  const handleYearChange = (newYear) => {
+    if(Math.abs(newYear - year) > 5) {
+      setYear(newYear);
+    }
+  }
 
   const first= 'rgba(255, 254, 229, 0.55)';
   const firstSide= 'rgba(255, 254, 229, 0.3)';
@@ -205,7 +211,7 @@ const Home = () => {
           position: 'absolute',
           left: '10px',
           height: '100%'}}>
-          <VerticalSlider />
+          <VerticalSlider handleChange={handleYearChange}/>
         </div>
 
         <div className="globe">
@@ -283,7 +289,7 @@ const Home = () => {
           />
           
         </div>
-        <Popup state={focusState} name={clickedCountry} yaer={year} cumulative={5} />
+        {countryEmissions ? <Popup state={focusState} name={clickedCountry} year={year} capita={yearEmissions[clickedCountry]} />: 'fetching'}
 
       </div>
   );

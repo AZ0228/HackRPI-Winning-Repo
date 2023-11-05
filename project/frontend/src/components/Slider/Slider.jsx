@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import data from "../../assets/data.geojson";
 import { useFectchYear } from '../../hooks/useFetchYear.js';
 
-const VerticalSlider = () => {
+const VerticalSlider = ({handleChange}) => {
   const [currentYear, setCurrentYear] = useState(valToYear(226));
 
 
@@ -36,7 +36,7 @@ const VerticalSlider = () => {
             min={0}
             defaultValue={226}
             onChange={(event, value) => {
-              setCurrentYear(valToYear(value));
+              handleChange(valToYear(value));
             }
             }
 
