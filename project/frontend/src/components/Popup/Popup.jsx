@@ -38,7 +38,7 @@ function Popup({state, name, year, cumulative, capita}){
                         <br></br>
                         <p>What could the {name} do to decrease their carbon footprint?</p>
                         <br></br>
-                        <p>Generating ideas...</p>
+                        <p className="loader"></p>
                     </div>
             </div>);
     }

@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.954ed28a.css",
+    "main.js": "/static/js/main.6b35a07c.js",
+    "static/js/787.9e9f4ffd.chunk.js": "/static/js/787.9e9f4ffd.chunk.js",
+    "static/media/data.geojson": "/static/media/data.c1cb48608d5504314516.geojson",
+    "static/media/earth-blue-marble.jpeg": "/static/media/earth-blue-marble.7deee995d548fe65faff.jpeg",
+    "static/media/earth-day.jpeg": "/static/media/earth-day.00bced8f697346025df6.jpeg",
+    "static/media/earth-dark.jpeg": "/static/media/earth-dark.fba5551b3f8ea655e43b.jpeg",
+    "static/media/Satoshi-Black.otf": "/static/media/Satoshi-Black.d27fb329e3c56de46506.otf",
+    "index.html": "/index.html",
+    "main.954ed28a.css.map": "/static/css/main.954ed28a.css.map",
+    "main.6b35a07c.js.map": "/static/js/main.6b35a07c.js.map",
+    "787.9e9f4ffd.chunk.js.map": "/static/js/787.9e9f4ffd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.954ed28a.css",
+    "static/js/main.6b35a07c.js"
+  ]
+}

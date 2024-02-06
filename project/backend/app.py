@@ -5,7 +5,7 @@ import datetime
 import os
 from flask import Flask, render_template, send_from_directory
 
-frontend_dir = os.path.abspath('../frontend/build')
+frontend_dir = os.path.abspath('./frontend_build/build')
 
 app = Flask(__name__, static_folder=frontend_dir, static_url_path='')
 
